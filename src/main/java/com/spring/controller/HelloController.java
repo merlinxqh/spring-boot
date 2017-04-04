@@ -1,12 +1,27 @@
 package com.spring.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.spring.config.ConfigProperties;
 
 @Controller
 public class HelloController {
+	
+	@Autowired
+	private Environment environment;
+	
+	@Autowired
+	private ConfigProperties config;
 	
 	@RequestMapping("/hello/{name}")
 	public String index(@PathVariable String name,ModelMap model){
@@ -16,7 +31,19 @@ public class HelloController {
 		 * 默认静态资源文件夹:src/main/resources/static
 		 * 
 		 */
+		System.out.println("abc:"+environment.getProperty("abc"));
+		System.out.println("xqh:"+environment.getProperty("xqh"));
 		return "hello";
+	}
+	
+	
+	@RequestMapping("/test")
+	public @ResponseBody Map<String, Object> test(String test){
+		Map<String,Object> res=new HashMap<>();
+		Assert.isTrue(true, "这里是一个异常");
+		res.put("response", "success");
+		res.put("baby", config);
+		return res;
 	}
 
 }
