@@ -1,7 +1,14 @@
 package com.spring.serialize;
 
-public class Student {
+import java.io.Serializable;
+
+public class Student implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6219735965360139006L;
+
 	private String name;
 
 	private int age;

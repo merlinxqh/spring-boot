@@ -1,6 +1,7 @@
 package com.spring.serialize;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +21,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import org.nustaq.serialization.FSTConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +42,14 @@ public class SerailizeTest {
 	private final static Logger logger=LoggerFactory.getLogger(SerailizeTest.class);
 	private static Random random=new Random();
 	
+	//PROTOSTUFF
 	private static RuntimeSchema<School> schema=RuntimeSchema.createFrom(School.class);
+	
+	//KRYO
+	private static Kryo kryo=new Kryo();
+	
+	//FST
+	private static FSTConfiguration fst = FSTConfiguration.createStructConfiguration();
 	
 	public static void main(String[] args) {
 		
@@ -73,17 +84,71 @@ public class SerailizeTest {
 //			logger.error("",e);
 //		}
 		
+//		try {
+//			long start=System.currentTimeMillis();
+//			logger.info("protostuff deserialize start:{}",start);
+//			protostuffDeserizliae();
+//			long end=System.currentTimeMillis();
+//			logger.info("protostuff deserialize time:{}",end-start);
+//		} catch (IOException e) {
+//			logger.error("",e);
+//		}
+		
+		//--------------------protostuff end----------------------------
+		
+		//------------------- fst start ----------------------------
+//		try {
+//			long start=System.currentTimeMillis();
+//			logger.info("fst serialize start:{}",start);
+//			fstSerialize();
+//			long end=System.currentTimeMillis();
+//			logger.info("fst serialize time:{}",end-start);
+//		} catch (IOException e) {
+//			logger.error("",e);
+//		}
+		
+//		try {
+//			long start=System.currentTimeMillis();
+//			logger.info("fst deserialize start:{}",start);
+//			fstDeserialize();
+//			long end=System.currentTimeMillis();
+//			logger.info("fst deserialize time:{}",end-start);
+//		} catch (IOException e) {
+//			logger.error("",e);
+//		}
+		//-------------------fst end----------------------------
+		
+	}
+	/**
+	 * TODO fst 序列化 对象内包含其他对象 这样有问题 
+	 * @throws IOException
+	 */
+	public static void fstSerialize() throws IOException{
+		OutputStream out=null;
 		try {
-			long start=System.currentTimeMillis();
-			logger.info("protostuff deserialize start:{}",start);
-			protostuffDeserizliae();
-			long end=System.currentTimeMillis();
-			logger.info("protostuff deserialize time:{}",end-start);
-		} catch (IOException e) {
-			logger.error("",e);
+			Student student=getStudent(12);
+			byte[] bytes=fst.asByteArray(student);
+			File file=new File("D:/fst.txt");
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			out=new FileOutputStream(file);
+			out.write(bytes);
+		} finally {
+			if(null != out){
+				out.close();
+			}
 		}
 		
 	}
+	
+	public static void fstDeserialize() throws IOException{
+		byte[] bytes=toByteArray("D:/fst.txt");
+		Student sch=(Student) fst.asObject(bytes);
+		logger.info("fst deserailize result:{}",JSONObject.toJSON(sch));
+	}
+	
+	
 	
 	/**
 	 * protostuff序列化
@@ -111,17 +176,9 @@ public class SerailizeTest {
 	 * @throws IOException 
 	 */
 	public static void protostuffDeserizliae() throws IOException{
-		
-		InputStream input=null;
-		try {
-			School sch=new School();
-			ProtostuffIOUtil.mergeFrom(toByteArray("D:/protostuff.txt"), sch, schema);
-			logger.info("protostuff deserailize result:{}",JSONObject.toJSON(sch));
-		} finally {
-			if(null != input){
-				input.close();
-			}
-		}
+		School sch=new School();
+		ProtostuffIOUtil.mergeFrom(toByteArray("D:/protostuff.txt"), sch, schema);
+		logger.info("protostuff deserailize result:{}",JSONObject.toJSON(sch));
 	}
 	
 	public static byte[] toByteArray(String filename) throws IOException {  
@@ -162,7 +219,6 @@ public class SerailizeTest {
 	public static void kryoSerialize() throws IOException{
 		Output output =null;
 		try {
-			Kryo kryo = new Kryo();
 			File file=new File("D:/kryo.txt");
 			if(!file.exists()){
 				file.createNewFile();
@@ -187,7 +243,6 @@ public class SerailizeTest {
 	public static void kryoDeserialize() throws FileNotFoundException{
 		Input input=null;
 		try {
-			Kryo kryo = new Kryo();
 			File file=new File("D:/kryo.txt");
 			input=new Input(new FileInputStream(file));
 			School school=kryo.readObject(input, School.class);
@@ -195,8 +250,30 @@ public class SerailizeTest {
 		} finally {
 			input.close();
 		}
-		
-		
+	}
+	
+	// jdk原生序列换方案
+	public static byte[] jdkserialize(Object obj) {
+		try (
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos);
+		){
+			oos.writeObject(obj);
+			return baos.toByteArray();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static Object jdkdeserialize(byte[] bits) {
+		try (ByteArrayInputStream bais = new ByteArrayInputStream(bits);
+				ObjectInputStream ois = new ObjectInputStream(bais);
+
+		) {
+			return ois.readObject();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
    
 	

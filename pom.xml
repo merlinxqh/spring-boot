@@ -74,6 +74,13 @@
 		    <artifactId>kryo-shaded</artifactId>
 		    <version>4.0.0</version>
 		</dependency>
+		<!-- fst序列化 -->
+		<dependency>
+		    <groupId>de.ruedigermoeller</groupId>
+		    <artifactId>fst</artifactId>
+		    <version>2.48</version>
+		</dependency>
+		<!-- alibaba fast json -->
 		<dependency>	
 		    <groupId>com.alibaba</groupId>
 		    <artifactId>fastjson</artifactId>

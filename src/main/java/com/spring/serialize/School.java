@@ -1,11 +1,17 @@
 package com.spring.serialize;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class School {
+public class School implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5189111123319291981L;
 
 	private String name;
 
