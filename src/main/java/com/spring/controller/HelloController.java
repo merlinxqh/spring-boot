@@ -8,11 +8,13 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.config.ConfigProperties;
+import com.spring.service.ResourceService;
 
 @Controller
 public class HelloController {
@@ -22,6 +24,14 @@ public class HelloController {
 	
 	@Autowired
 	private ConfigProperties config;
+	
+	@Autowired
+	private ResourceService resourceService;
+	
+	@GetMapping(value="getList")
+	public @ResponseBody Object getList(){
+		return resourceService.findByBiz(null);
+	}
 	
 	@RequestMapping("/hello/{name}")
 	public String index(@PathVariable String name,ModelMap model){

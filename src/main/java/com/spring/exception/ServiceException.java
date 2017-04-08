@@ -12,18 +12,18 @@ public class ServiceException extends RuntimeException{
 	 */
 	private static final long serialVersionUID = -6926247165110964054L;
 	
-	private Integer code;
+	private String code;
 	
-	public ServiceException(Integer code,String msg){
+	public ServiceException(String code,String msg){
 		super(msg);
 		this.code=code;
 	}
 
-	public Integer getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(Integer code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 }
