@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC
+ "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+ "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  <properties url="file:///E:/code/github/leo-spring-boot/src/main/resources/application-dev.properties"/>
+  
+  <classPathEntry location="E:/maven_repo/mysql/mysql-connector-java/5.1.40/mysql-connector-java-5.1.40.jar" />
+  
+  <!-- This should cause an error because sqlMapGenerator is required
+       if there is no javaClientGenerator -->
+  <context id="MyBatis3NoClient" targetRuntime="MyBatis3" defaultModelType="flat">
+    <!-- <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" /> -->
+	
+	<commentGenerator type="org.mybatis.generator.ext.MyCommentGenerator">
+		<property name="suppressAllComments" value="false" />
+	</commentGenerator>
+
+	<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/spring_boot?useUnicode=true&amp;characterEncoding=utf-8"
+			userId="root" password="root" />
+	
+	<!-- 实体类 -->
+    <javaModelGenerator targetPackage="com.spring.model" targetProject="leo-spring-boot">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+      <property name="rootClass" value="com.spring.base.entity.BaseEntity"/>
+    </javaModelGenerator>
+	
+	<!-- sql文件 -->
+	<sqlMapGenerator targetPackage="com.spring.dao.mapper" targetProject="leo-spring-boot/src/main/resources" />
+   		
+   	<!-- mapper层 -->
+	<javaClientGenerator type="XMLMAPPER" targetPackage="com.spring.dao.mapper"
+     	targetProject="leo-spring-boot" interfaceExtendSupInterface="com.spring.base.dao.CrudMapper"
+     	mapperScanAnnotation="com.spring.base.mybatis.annotation.MyBatisDao">
+    </javaClientGenerator>
+	
+	<!-- service -->
+	<javaServiceGenerator targetPackage="com.spring.service"
+		targetProject="leo-spring-boot" interfaceExtendSupInterface="com.spring.base.service.BaseCrudService"
+		extendSupClass="com.spring.base.service.impl.BaseCrudServiceImpl" /> 
+	
+    <tableSetting isSchema="true" enableCountByExample="false"
+		enableUpdateByExample="false" enableDeleteByExample="false"
+		enableSelectByExample="false" selectByExampleQueryId="false">
+		<prop name="replaceTablePrefix">
+			<list>
+				<prefix name="" value="" />
+			</list>
+		</prop>
+		<!-- 忽略schema，避免在xml中出现schema.表名 -->
+		<prop name="ignoreGeneratorSchema" value="true" />
+	</tableSetting>
+  </context>
+
+</generatorConfiguration>
