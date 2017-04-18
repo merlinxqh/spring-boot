@@ -11,3 +11,5 @@
 /target/
 /.settings/
 .settings/org.eclipse.core.resources.prefs
+.idea/vcs.xml
+.idea/workspace.xml

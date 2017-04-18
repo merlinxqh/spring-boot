@@ -4,7 +4,7 @@ import com.spring.base.dao.CrudMapper;
 import com.spring.base.mybatis.annotation.MyBatisDao;
 
 /**
- * resource鏁版嵁搴撴搷浣滄帴鍙�
+ * resource
  * 
  * @author leo
  * @date 2017-04-08 15:07:43
