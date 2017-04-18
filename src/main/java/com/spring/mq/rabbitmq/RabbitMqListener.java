@@ -15,7 +15,6 @@ import org.springframework.messaging.handler.annotation.Payload;
 import com.spring.mq.rabbitmq.config.RabbitMqConfig;
 
 @Configuration
-@RabbitListener(queues=RabbitMqConfig.FOO_QUEUE)
 public class RabbitMqListener {
    private final static Logger logger=LoggerFactory.getLogger(RabbitMqListener.class);
    
@@ -45,7 +44,7 @@ public class RabbitMqListener {
        return BindingBuilder.bind(testQueue()).to(defaultExchange()).with(RabbitMqConfig.FOO_ROUTINGKEY);  
    } 
    
-   @RabbitHandler
+   @RabbitListener(queues=RabbitMqConfig.FOO_QUEUE, containerFactory="rabbitListenerContainerFactory")
    public void process(@Payload String foo){
 	   logger.info(foo);
    }
