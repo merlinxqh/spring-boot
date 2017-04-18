@@ -5,18 +5,19 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.config.ConfigProperties;
+import com.spring.mq.rabbitmq.RabbitMqSender;
 import com.spring.service.ResourceService;
 
-@Controller
+@RestController
 public class HelloController {
 	
 	@Autowired
@@ -27,6 +28,15 @@ public class HelloController {
 	
 	@Autowired
 	private ResourceService resourceService;
+	
+	@Autowired
+	private RabbitMqSender sender;
+	
+	@GetMapping("/send")
+	public String send(String msg){
+		sender.send(msg);
+		return "Send Ok.";
+	}
 	
 	@GetMapping(value="getList")
 	public @ResponseBody Object getList(){

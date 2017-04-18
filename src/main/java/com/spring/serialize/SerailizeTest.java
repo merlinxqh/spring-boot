@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -21,6 +22,8 @@ import java.util.Random;
 import java.util.Set;
 
 import org.nustaq.serialization.FSTConfiguration;
+import org.nustaq.serialization.FSTObjectInput;
+import org.nustaq.serialization.FSTObjectOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +52,10 @@ public class SerailizeTest {
 	
 	//FST
 	private static FSTConfiguration fst = FSTConfiguration.createStructConfiguration();
+	
+	static{
+		fst.registerClass(School.class,Student.class);
+	}
 	
 	public static void main(String[] args) {
 		
@@ -96,15 +103,15 @@ public class SerailizeTest {
 		//--------------------protostuff end----------------------------
 		
 		//------------------- fst start ----------------------------
-//		try {
-//			long start=System.currentTimeMillis();
-//			logger.info("fst serialize start:{}",start);
-//			fstSerialize();
-//			long end=System.currentTimeMillis();
-//			logger.info("fst serialize time:{}",end-start);
-//		} catch (IOException e) {
-//			logger.error("",e);
-//		}
+		try {
+			long start=System.currentTimeMillis();
+			logger.info("fst serialize start:{}",start);
+			fstSerialize();
+			long end=System.currentTimeMillis();
+			logger.info("fst serialize time:{}",end-start);
+		} catch (IOException e) {
+			logger.error("",e);
+		}
 		
 //		try {
 //			long start=System.currentTimeMillis();
@@ -125,14 +132,13 @@ public class SerailizeTest {
 	public static void fstSerialize() throws IOException{
 		OutputStream out=null;
 		try {
-			Student student=getStudent(12);
-			byte[] bytes=fst.asByteArray(student);
 			File file=new File("D:/fst.txt");
 			if(!file.exists()){
 				file.createNewFile();
 			}
 			out=new FileOutputStream(file);
-			out.write(bytes);
+			School sch=getSchool();
+			mywriteMethod(out, sch);
 		} finally {
 			if(null != out){
 				out.close();
@@ -145,6 +151,24 @@ public class SerailizeTest {
 		byte[] bytes=toByteArray("D:/fst.txt");
 		Student sch=(Student) fst.asObject(bytes);
 		logger.info("fst deserailize result:{}",JSONObject.toJSON(sch));
+	}
+	
+	public static School myreadMethod(InputStream stream) throws Exception
+	{
+	    FSTObjectInput in = fst.getObjectInput(stream);
+	    School result = (School) in.readObject(School.class);
+	    // DON'T: in.close(); here prevents reuse and will result in an exception      
+	    stream.close();
+	    return result;
+	}
+
+	public static void mywriteMethod( OutputStream stream, School toWrite ) throws IOException 
+	{
+	    FSTObjectOutput out = fst.getObjectOutput(stream);
+	    out.writeObject( toWrite, School.class );
+	    // DON'T out.close() when using factory method;
+	    out.flush();
+	    stream.close();
 	}
 	
 	
