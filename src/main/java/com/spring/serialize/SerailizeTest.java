@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import com.alibaba.fastjson.JSON;
 import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectInput;
 import org.nustaq.serialization.FSTObjectOutput;
@@ -99,14 +100,14 @@ public class SerailizeTest {
 //		} catch (IOException e) {
 //			logger.error("",e);
 //		}
-		
+
 		//--------------------protostuff end----------------------------
 		
 		//------------------- fst start ----------------------------
 		try {
 			long start=System.currentTimeMillis();
 			logger.info("fst serialize start:{}",start);
-			fstSerialize();
+			protostuffDesList();
 			long end=System.currentTimeMillis();
 			logger.info("fst serialize time:{}",end-start);
 		} catch (IOException e) {
@@ -170,7 +171,7 @@ public class SerailizeTest {
 	    out.flush();
 	    stream.close();
 	}
-	
+
 	
 	
 	/**
@@ -192,6 +193,31 @@ public class SerailizeTest {
 				out.close();
 			}
 		}
+	}
+
+	/**
+	 * 序列化list
+	 * @throws IOException
+	 */
+	public static void protostuffSerList()throws  IOException{
+		OutputStream out=null;
+		try {
+			File file=new File("D:/protostuff_list.txt");
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			out=new FileOutputStream(file);
+			ProtostuffIOUtil.writeListTo(out,getSchoolList(),schema,LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));
+		} finally {
+			if(null != out){
+				out.close();
+			}
+		}
+	}
+
+	public static void protostuffDesList()throws  IOException{
+        List<School> slist=ProtostuffIOUtil.parseListFrom(new ByteArrayInputStream(toByteArray("D:/protostuff_list.txt")),schema);
+		System.out.println(JSON.toJSONString(slist));
 	}
 	
 	/**
@@ -298,8 +324,15 @@ public class SerailizeTest {
 			throw new RuntimeException(e);
 		}
 	}
-   
-	
+
+	public static List<School> getSchoolList(){
+		List<School> slist=new ArrayList<>();
+		slist.add(getSchool());
+		slist.add(getSchool());
+		slist.add(getSchool());
+        return slist;
+	}
+
 	public static School getSchool(){
 		School school=new School();
 		school.setName("西北师范大学");
