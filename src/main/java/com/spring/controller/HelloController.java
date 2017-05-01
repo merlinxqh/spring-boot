@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.config.ConfigProperties;
+import com.spring.config.properties.ConfigProperties;
 import com.spring.mq.rabbitmq.RabbitMqSender;
+import com.spring.serialize.School;
+import com.spring.serialize.SerailizeTest;
 import com.spring.service.ResourceService;
 
 @RestController
@@ -29,12 +32,16 @@ public class HelloController {
 	@Autowired
 	private ResourceService resourceService;
 	
+//	@Autowired
+//	private RabbitMqSender sender;
+	
 	@Autowired
-	private RabbitMqSender sender;
+	private RedisTemplate<String, String> redisTemplate;
 	
 	@GetMapping("/send")
 	public String send(String msg){
-		sender.send(msg);
+//		sender.send(msg);
+		redisTemplate.opsForValue().set("redis:test:school", "dddfasdfasdfasdf");
 		return "Send Ok.";
 	}
 	

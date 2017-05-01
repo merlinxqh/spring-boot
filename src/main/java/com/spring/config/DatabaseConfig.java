@@ -1,7 +1,7 @@
 package com.spring.config;
 
-import java.sql.SQLException;
-
+import com.alibaba.druid.pool.DruidDataSource;
+import com.spring.config.properties.DataSourceProperties;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -15,12 +15,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.sql.SQLException;
+
 /**
  * @author leo
- *
  */
-
-import com.alibaba.druid.pool.DruidDataSource;
 
 @Configuration
 @EnableTransactionManagement

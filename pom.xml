@@ -1,24 +1,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<dependencyManagement>
-		<dependencies>
+	<parent>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-parent</artifactId>
+	    <version>1.5.3.RELEASE</version>
+	</parent>
+<!-- 	<dependencyManagement> -->
+<!-- 		<dependencies> -->
 			<!-- Override Spring Data release train provided by Spring Boot -->
-			<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-releasetrain</artifactId>
-				<version>Fowler-SR2</version>
-				<scope>import</scope>
-				<type>pom</type>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>1.5.2.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+<!-- 			<dependency> -->
+<!-- 				<groupId>org.springframework.data</groupId> -->
+<!-- 				<artifactId>spring-data-releasetrain</artifactId> -->
+<!-- 				<version>Fowler-SR2</version> -->
+<!-- 				<scope>import</scope> -->
+<!-- 				<type>pom</type> -->
+<!-- 			</dependency> -->
+<!-- 			<dependency> -->
+<!-- 				<groupId>org.springframework.boot</groupId> -->
+<!-- 				<artifactId>spring-boot-dependencies</artifactId> -->
+<!-- 				<version>1.5.3.RELEASE</version> -->
+<!-- 				<type>pom</type> -->
+<!-- 				<scope>import</scope> -->
+<!-- 			</dependency> -->
+<!-- 		</dependencies> -->
+<!-- 	</dependencyManagement> -->
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.spring</groupId>
 	<artifactId>spring-boot</artifactId>
@@ -41,6 +46,7 @@
 	    <commons-lang3.version>3.3</commons-lang3.version>
 	    <commons-io.version>2.4</commons-io.version>
 	    <commons-dbcp2.version>2.1.1</commons-dbcp2.version>
+		<spring.data.redis.version>1.8.1.RELEASE</spring.data.redis.version>
 	</properties>
 
 	<url>http://maven.apache.org</url>
@@ -71,15 +77,30 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.boot</groupId> -->
+<!-- 			<artifactId>spring-boot-starter-security</artifactId> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
-		<dependency>
-		    <groupId>redis.clients</groupId>
-		    <artifactId>jedis</artifactId>
-		</dependency>
-		<!-- protostuff序列化 -->
+	     <dependency>  
+	           <groupId>org.springframework.boot</groupId>  
+	           <artifactId>spring-boot-configuration-processor</artifactId>  
+	           <optional>true</optional>  
+	     </dependency> 
+<!-- 		spring-data-redis -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.data</groupId> -->
+<!-- 			<artifactId>spring-data-redis</artifactId> -->
+<!-- 			<version>${spring.data.redis.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		    <groupId>redis.clients</groupId> -->
+<!-- 		    <artifactId>jedis</artifactId> -->
+<!-- 		</dependency> -->
+<!-- 		protostuff序列化 -->
 		<dependency>
 		    <groupId>com.dyuproject.protostuff</groupId>
 		    <artifactId>protostuff-core</artifactId>
