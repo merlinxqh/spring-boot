@@ -1,20 +1,20 @@
 package com.spring.serialize;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
-
 import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.ProtostuffIOUtil;
 import com.dyuproject.protostuff.Schema;
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+
 /**
  * Created by leo on 2017/4/29.
  * protostuff序列化实现
  */
-public class ProtostuffSerailizeUtils{
+public class ProtoStuffSerializerUtils {
 	
     public static <T> byte[] serialize(T obj) {
         if (obj == null) {

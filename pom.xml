@@ -89,7 +89,12 @@
 	           <groupId>org.springframework.boot</groupId>  
 	           <artifactId>spring-boot-configuration-processor</artifactId>  
 	           <optional>true</optional>  
-	     </dependency> 
+	     </dependency>
+		<dependency>
+			<groupId>com.caucho</groupId>
+			<artifactId>hessian</artifactId>
+			<version>4.0.38</version>
+		</dependency>
 <!-- 		spring-data-redis -->
 <!-- 		<dependency> -->
 <!-- 			<groupId>org.springframework.data</groupId> -->

@@ -1,8 +1,9 @@
 package com.spring.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.alibaba.fastjson.JSON;
+import com.spring.config.properties.RedisProperties;
+import com.spring.serialize.hessian2.Hessian2SerializationRedisSerializer;
+import com.spring.serialize.protostuff.ProtostuffRedisSerailize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -10,14 +11,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisNode;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import com.alibaba.fastjson.JSON;
-import com.spring.config.properties.RedisProperties;
-import com.spring.serialize.ProtostuffSerailize;
-
 import redis.clients.jedis.JedisPoolConfig;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by leo on 2017/4/29.
@@ -84,21 +83,28 @@ public class RedisConfig {
 		return new StringRedisSerializer();
 	}
 	
-	@Bean
-	public ProtostuffSerailize protostuffSerailize(){
-		ProtostuffSerailize serailize=new ProtostuffSerailize();
-		return serailize;
-	}
 
-    @Bean
-    public RedisTemplate<String,Object> redisTemplate(){
-        RedisTemplate<String,Object> template=new RedisTemplate<String,Object>();
-        template.setConnectionFactory(jedisConnectionFactory());
-        template.setKeySerializer(stringRedisSerializer());
-        template.setHashKeySerializer(stringRedisSerializer());
-        template.setDefaultSerializer(protostuffSerailize());
-        return template;
+	@Bean
+	public Hessian2SerializationRedisSerializer hessian2Serializer(){
+	    return new Hessian2SerializationRedisSerializer();
     }
 
+
+//    @Bean
+//    public RedisTemplate<String,Object> redisTemplate(){
+//        RedisTemplate<String,Object> template=new RedisTemplate<String,Object>();
+//        template.setConnectionFactory(jedisConnectionFactory());
+//        template.setKeySerializer(stringRedisSerializer());
+//        template.setHashKeySerializer(stringRedisSerializer());
+//        template.setDefaultSerializer(protostuffSerailize());
+//        return template;
+//    }
+
+    @Bean
+    public StringRedisTemplate redisTemplate(){
+       StringRedisTemplate redisTemplate=new StringRedisTemplate();
+       redisTemplate.setConnectionFactory(jedisConnectionFactory());
+       return redisTemplate;
+    }
 
 }

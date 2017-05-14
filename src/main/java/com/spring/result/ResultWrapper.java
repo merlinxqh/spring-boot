@@ -10,6 +10,10 @@ public class ResultWrapper<T>{
 	
 	//结果信息
 	private T data;
+
+	public ResultWrapper(){
+		super();
+	}
 	
 	public ResultWrapper(Integer code,String msg){
 		this.code=code;

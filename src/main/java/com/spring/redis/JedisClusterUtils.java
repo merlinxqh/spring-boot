@@ -246,8 +246,7 @@ public class JedisClusterUtils {
      * @return 数据 
      */  
     public static String getString(String key) {  
-        cacheUtils.redisTemplate.opsForValue().get(key);  
-  
+
         return cacheUtils.redisTemplate.opsForValue().get(key);  
     }  
   

@@ -1,24 +1,20 @@
 package com.spring.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.ui.ModelMap;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.spring.config.properties.ConfigProperties;
-import com.spring.mq.rabbitmq.RabbitMqSender;
+import com.spring.redis.ObjectRedisTemplate;
+import com.spring.result.ResultWrapper;
 import com.spring.serialize.School;
 import com.spring.serialize.SerailizeTest;
 import com.spring.service.ResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class HelloController {
@@ -34,15 +30,18 @@ public class HelloController {
 	
 //	@Autowired
 //	private RabbitMqSender sender;
-	
+
 	@Autowired
-	private RedisTemplate<String, String> redisTemplate;
+	private ObjectRedisTemplate redisTemplate;
 	
+
 	@GetMapping("/send")
-	public String send(String msg){
-//		sender.send(msg);
-		redisTemplate.opsForValue().set("redis:test:school", "dddfasdfasdfasdf");
-		return "Send Ok.";
+	public ResultWrapper<?> send(String msg){
+		redisTemplate.setListObj("redis:template:list:school", SerailizeTest.getSchoolList());
+
+		List<School> schoolList=redisTemplate.getListObj("redis:template:list:school",School.class);
+
+		return new ResultWrapper<>(1,"从redis读取对象",schoolList);
 	}
 	
 	@GetMapping(value="getList")
