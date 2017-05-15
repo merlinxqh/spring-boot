@@ -266,7 +266,7 @@ public class JedisClusterUtils {
             return connection.exists(key.getBytes());  
         });  
   
-        if (flag) {  
+        if (!flag) {
             return new ArrayList<>();  
         }  
         ListOperations<String, String> lo = cacheUtils.redisTemplate.opsForList();  
@@ -391,7 +391,7 @@ public class JedisClusterUtils {
     public static boolean hashCached(String hName, String key) {  
   
         return cacheUtils.redisTemplate.execute((RedisCallback<Boolean>) connection -> {  
-            return connection.hExists(key.getBytes(), key.getBytes());  
+            return connection.hExists(hName.getBytes(), key.getBytes());
         });  
     }  
   

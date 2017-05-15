@@ -25,6 +25,16 @@ public class RedisTest {
 //        redisTemplate.hashSet("mapName","mapKey1","abcdefg_1");
 //        redisTemplate.hashSet("mapName","mapKey2","abcdefg_2");
 //        redisTemplate.hashSet("mapName","mapKey3","abcdefg_3");
-        System.out.println(redisTemplate.hashGetAll("mapName"));
+//        System.out.println(redisTemplate.hashGetAll("mapName"));
+//        for(int i=0;i<100;i++){
+//            redisTemplate.setToQueue("queue_int",""+i,100);
+//        }
+//        System.out.println("------------------------"+redisTemplate.getFromQueue("queue_int",100));
+//        System.out.println("------------------------  "+redisTemplate.popQueue("queue_int"));
+//        redisTemplate.setString("string:incr:key","200");
+//        redisTemplate.incrementBack("string:incr:key");
+//        System.out.println("------------------------=============   "+redisTemplate.getString("string:incr:key"));
+//        System.out.println("------------------------");
+        System.out.println(redisTemplate.isMember("mapKey3","abcdefg_3") + "    "+redisTemplate.hashExists("mapName","mapKey3"));
     }
 }
