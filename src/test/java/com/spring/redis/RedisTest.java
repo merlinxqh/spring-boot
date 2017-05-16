@@ -1,5 +1,8 @@
 package com.spring.redis;
 
+import com.alibaba.fastjson.JSON;
+import com.spring.serialize.School;
+import com.spring.serialize.SerailizeTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -27,7 +30,12 @@ public class RedisTest {
 //        redisTemplate.hashSet("mapName","mapKey3","abcdefg_3");
 //        System.out.println(redisTemplate.hashGetAll("mapName"));
 //        for(int i=0;i<100;i++){
-//            redisTemplate.setToQueue("queue_int",""+i,100);
+//            redisTemplate.saveToSet("set_key",""+i);
+//        }
+//        System.out.println(redisTemplate.existsInSet("set_key","200"));
+//        System.out.println(redisTemplate.listSet("set_key"));
+//        for(int i=0;i<20;i++){
+//            System.out.println(redisTemplate.popSet("set_key"));
 //        }
 //        System.out.println("------------------------"+redisTemplate.getFromQueue("queue_int",100));
 //        System.out.println("------------------------  "+redisTemplate.popQueue("queue_int"));
@@ -35,6 +43,9 @@ public class RedisTest {
 //        redisTemplate.incrementBack("string:incr:key");
 //        System.out.println("------------------------=============   "+redisTemplate.getString("string:incr:key"));
 //        System.out.println("------------------------");
-        System.out.println(redisTemplate.isMember("mapKey3","abcdefg_3") + "    "+redisTemplate.hashExists("mapName","mapKey3"));
+//        System.out.println(redisTemplate.existsInSet("mapKey3","abcdefg_3") + "    "+redisTemplate.hashExists("mapName","mapKey3"));
+
+          redisTemplate.setObjToMap("mapName","mapKeyObj", SerailizeTest.getSchool());
+        System.out.println(JSON.toJSONString(redisTemplate.getObjFromMap("mapName","mapKeyObj", School.class)));
     }
 }

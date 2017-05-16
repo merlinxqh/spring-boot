@@ -4,6 +4,7 @@ import com.spring.serialize.ProtoStuffSerializerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisZSetCommands;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -163,6 +165,9 @@ public class ObjectRedisTemplate{
 	}
 
 	/**
+	 * ----------------------------hashMap start---------------------------------
+	 */
+	/**
 	 * 保存到hash集合中
 	 * @param hName  集合名称
 	 * @param key
@@ -193,6 +198,59 @@ public class ObjectRedisTemplate{
 		return redisTemplate.opsForHash().entries(mapName);
 	}
 
+	/**
+	 * 从hash map中取得复杂类型数据
+	 *
+	 * @param key
+	 * @param field
+	 * @param clazz
+	 */
+	public  <T> T getObjFromMap(String key, String field, Class<T> clazz) {
+
+		byte[] input = redisTemplate.execute((RedisCallback<byte[]>) connection -> {
+			return connection.hGet(key.getBytes(), field.getBytes());
+		});
+		return ProtoStuffSerializerUtils.deserialize(input,clazz);
+	}
+
+	/**
+	 * set对象到map
+	 * @param mapKey
+	 * @param filed
+	 * @param obj
+	 * @param <T>
+	 */
+	public <T> void setObjToMap(String mapKey,String filed,T obj){
+		final byte[] bmapKey = mapKey.getBytes();
+		final byte[] bfiled=filed.getBytes();
+		final byte[] bvalue = ProtoStuffSerializerUtils.serialize(obj);
+		boolean result=redisTemplate.execute(new RedisCallback<Boolean>() {
+			@Override
+			public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+				connection.hSet(bmapKey,bfiled, bvalue);
+				return true;
+			}
+		});
+	}
+
+	/**
+	 * 从hashmap中删除一个值
+	 *
+	 * @param key
+	 *            map名
+	 * @param field
+	 *            成员名称
+	 */
+	public  void delFromMap(String key, String field) {
+		redisTemplate.execute((RedisCallback<Long>) connection -> connection.hDel(key.getBytes(), field.getBytes()));
+	}
+	/**
+	 * ----------------------------hashMap end---------------------------------
+	 */
+
+	/**
+	 * ----------------------------set start---------------------------------
+	 */
 
 	/**
 	 * 保存数据到 set集合中
@@ -203,6 +261,124 @@ public class ObjectRedisTemplate{
 		redisTemplate.opsForSet().add(key,value);
 	}
 
+
+	/**
+	 * 验证set中是否包含
+	 * @param key
+	 * @param val
+	 * @return
+	 */
+	public boolean existsInSet(String key, String val) {
+		return redisTemplate.execute((RedisCallback<Boolean>) connection -> {
+			return connection.sIsMember(key.getBytes(), val.getBytes());
+		});
+	}
+
+	/**
+	 * 列出set中所有成员
+	 * @param setName
+	 * @return
+	 */
+	public  Set<String> listSet(String setName) {
+		return redisTemplate.opsForSet().members(setName);
+	}
+
+
+	/**
+	 * 从set中获取一个
+	 * @param setName
+	 * @return
+	 */
+	public String popSet(String setName){
+		return redisTemplate.opsForSet().pop(setName);
+	}
+
+	/**
+	 * 逆序列出sorted set包括分数的set列表
+	 *
+	 * @param key
+	 *            set名
+	 * @param start
+	 *            开始位置
+	 * @param end
+	 *            结束位置
+	 * @return 列表
+	 */
+	public  Set<RedisZSetCommands.Tuple> listSortedsetRev(String key, int start, int end) {
+		return redisTemplate.execute((RedisCallback<Set<RedisZSetCommands.Tuple>>) connection -> {
+			return connection.zRevRangeWithScores(key.getBytes(), start, end);
+		});
+	}
+
+	/**
+	 * 逆序取得sorted sort排名
+	 *
+	 * @param key
+	 *            set名
+	 * @param member
+	 *            成员名
+	 * @return 排名
+	 */
+	public  Long getRankRev(String key, String member) {
+
+		return redisTemplate.execute((RedisCallback<Long>) connection -> {
+			return connection.zRevRank(key.getBytes(), member.getBytes());
+		});
+
+	}
+
+	/**
+	 * 根据成员名取得sorted sort分数
+	 *
+	 * @param key
+	 *            set名
+	 * @param member
+	 *            成员名
+	 * @return 分数
+	 */
+	public Double getMemberScore(String key, String member) {
+
+		return redisTemplate.execute((RedisCallback<Double>) connection -> {
+			return connection.zScore(key.getBytes(), member.getBytes());
+		});
+	}
+
+	/**
+	 * 向sorted set中追加一个值
+	 *
+	 * @param key
+	 *            set名
+	 * @param score
+	 *            分数
+	 * @param member
+	 *            成员名称
+	 */
+	public void saveToSortedset(String key, Double score, String member) {
+
+		redisTemplate.execute((RedisCallback<Boolean>) connection -> connection.zAdd(key.getBytes(), score, member.getBytes()));
+	}
+
+	/**
+	 * 从sorted set删除一个值
+	 *
+	 * @param key
+	 *            set名
+	 * @param member
+	 *            成员名称
+	 */
+	public  void delFromSortedset(String key, String member) {
+		redisTemplate.execute((RedisCallback<Long>) connection -> connection.zRem(key.getBytes(), member.getBytes()));
+
+	}
+
+	/**
+	 * ----------------------------set end---------------------------------
+	 */
+
+
+	/**
+	 * ----------------------------queue start---------------------------------
+	 */
 
 	/**
 	 * 存到指定的队列中
@@ -249,6 +425,14 @@ public class ObjectRedisTemplate{
 		return redisTemplate.opsForList().rightPop(key);
 	}
 
+	/**
+	 * ----------------------------queue end---------------------------------
+	 */
+
+
+	/**
+	 * ----------------------------increment start---------------------------------
+	 */
 	/**
 	 * 将自增变量存到redis
 	 * @param key
@@ -297,6 +481,10 @@ public class ObjectRedisTemplate{
 	}
 
 	/**
+	 * ----------------------------increment end---------------------------------
+	 */
+
+	/**
 	 * 将 key的值保存为 value ，当且仅当 key 不存在。 若给定的 key 已经存在，则 SETNX 不做任何动作。 SETNX 是『SET
 	 * if Not eXists』(如果不存在，则 SET)的简写。 <br>
 	 * 保存成功，返回 true <br>
@@ -318,6 +506,23 @@ public class ObjectRedisTemplate{
 		return redisTemplate.execute((RedisCallback<Boolean>) connection -> {
 			return connection.exists(key.getBytes());
 		});
+	}
+
+	/**
+	 * 删除数据
+	 * @param key
+	 */
+	public void delKey(String key){
+		redisTemplate.execute((RedisCallback<Long>) connection -> connection.del(key.getBytes()));
+	}
+
+	/**
+	 * 设置超时时间
+	 * @param key
+	 * @param seconds
+	 */
+	public void expire(String key, int seconds){
+		redisTemplate.execute((RedisCallback<Boolean>) connection -> connection.expire(key.getBytes(), seconds));
 	}
 
 }

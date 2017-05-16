@@ -1,18 +1,17 @@
 package com.spring.mq.rabbitmq;
 
+import com.spring.mq.rabbitmq.config.RabbitMqConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.handler.annotation.Payload;
-
-import com.spring.mq.rabbitmq.config.RabbitMqConfig;
+import org.springframework.util.Assert;
 
 @Configuration
 public class RabbitMqListener {
@@ -39,13 +38,14 @@ public class RabbitMqListener {
    }
    
    @Bean  
-   public Binding binding() {  
-       /** 将队列绑定到交换机 */  
+   public Binding binding() {
+       /** 将队列绑定到交换机 */
        return BindingBuilder.bind(testQueue()).to(defaultExchange()).with(RabbitMqConfig.FOO_ROUTINGKEY);  
    } 
    
    @RabbitListener(queues=RabbitMqConfig.FOO_QUEUE, containerFactory="rabbitListenerContainerFactory")
    public void process(@Payload String foo){
-	   logger.info(foo);
+      System.out.println("---------------"+foo);
+       Assert.isTrue(false,"就是不成功");
    }
 }
