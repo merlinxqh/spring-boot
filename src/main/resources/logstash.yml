@@ -1,0 +1,23 @@
+filter {
+    grok {
+        match => { "message" => "%{DATA:timestamp}\|%{IP:serverIp}\|%{IP:clientIp}\|%{DATA:logSource}\|%{DATA:userId}\|%{DATA:reqUrl}\|%{DATA:reqUri}\|%{DATA:refer}\|%{DATA:device}\|%{DATA:textDuring}\|%{DATA:duringTime:int}\|\|"}
+    }
+
+    date {
+        match => [ "timestamp", "yyyy-MM-dd-HH:mm:ss" ]
+        locale => "cn"
+    }
+
+    geoip {
+        source => "clientIp"
+    }
+
+    useragent {
+        source => "device"
+        target => "userDevice"
+    }
+
+    mutate {
+        convert => ["duringTime", "integer"]
+    }
+}
