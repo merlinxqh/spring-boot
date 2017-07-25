@@ -7,7 +7,7 @@ import com.dyuproject.protostuff.runtime.RuntimeSchema;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.spring.config.properties.ConfigProperties;
+import com.spring.common.config.properties.ConfigProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

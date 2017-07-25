@@ -25,7 +25,7 @@
     <javaModelGenerator targetPackage="com.spring.model" targetProject="leo-spring-boot">
       <property name="enableSubPackages" value="true" />
       <property name="trimStrings" value="true" />
-      <property name="rootClass" value="com.spring.base.entity.BaseEntity"/>
+      <property name="rootClass" value="com.spring.common.base.entity.BaseEntity"/>
     </javaModelGenerator>
 	
 	<!-- sql文件 -->
@@ -33,14 +33,14 @@
    		
    	<!-- mapper层 -->
 	<javaClientGenerator type="XMLMAPPER" targetPackage="com.spring.dao.mapper"
-     	targetProject="leo-spring-boot" interfaceExtendSupInterface="com.spring.base.dao.CrudMapper"
-     	mapperScanAnnotation="com.spring.base.mybatis.annotation.MyBatisDao">
+     	targetProject="leo-spring-boot" interfaceExtendSupInterface="com.spring.common.base.dao.CrudMapper"
+     	mapperScanAnnotation="com.spring.common.base.mybatis.annotation.MyBatisDao">
     </javaClientGenerator>
 	
 	<!-- service -->
 	<javaServiceGenerator targetPackage="com.spring.service"
-		targetProject="leo-spring-boot" interfaceExtendSupInterface="com.spring.base.service.BaseCrudService"
-		extendSupClass="com.spring.base.service.impl.BaseCrudServiceImpl" /> 
+		targetProject="leo-spring-boot" interfaceExtendSupInterface="com.spring.common.base.service.BaseCrudService"
+		extendSupClass="com.spring.common.base.service.impl.BaseCrudServiceImpl" />
 	
     <tableSetting isSchema="true" enableCountByExample="false"
 		enableUpdateByExample="false" enableDeleteByExample="false"

@@ -1,11 +1,11 @@
 package com.spring.controller;
 
-import com.spring.config.properties.ConfigProperties;
-import com.spring.redis.ObjectRedisTemplate;
-import com.spring.result.ResultWrapper;
-import com.spring.serialize.School;
-import com.spring.serialize.SerailizeTest;
-import com.spring.service.ResourceService;
+import com.spring.common.config.properties.ConfigProperties;
+import com.spring.common.redis.ObjectRedisTemplate;
+import com.spring.common.result.ResultWrapper;
+import com.spring.common.serialize.School;
+import com.spring.common.serialize.SerailizeTest;
+import com.spring.module.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.ui.ModelMap;

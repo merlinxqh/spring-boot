@@ -1,8 +1,9 @@
 package com.spring.redis;
 
 import com.alibaba.fastjson.JSON;
-import com.spring.serialize.School;
-import com.spring.serialize.SerailizeTest;
+import com.spring.common.redis.ObjectRedisTemplate;
+import com.spring.common.serialize.School;
+import com.spring.common.serialize.SerailizeTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

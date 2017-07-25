@@ -4,7 +4,7 @@
 
 	<!-- 插件配置 -->
 	<plugins>
-		<plugin interceptor="com.spring.base.mybatis.interceptor.PaginationInterceptor" />
+		<plugin interceptor="com.spring.common.base.mybatis.interceptor.PaginationInterceptor" />
     </plugins>
 	
 </configuration>
