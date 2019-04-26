@@ -1,5 +1,4 @@
 package com.spring.common;
-
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -33,6 +32,8 @@ public class CodeGenerator {
     public final static String package_name = "com.spring.module";
 
     public final static boolean need_module = false;// 是否需要模块目录
+
+    public final static String module_name = "sys";// 模块名
 
     public final static String author = "xuqianghui";// 作者
 
@@ -81,7 +82,8 @@ public class CodeGenerator {
         PackageConfig pc = new PackageConfig();
         // 是否需要 模块包
         if(need_module){
-            pc.setModuleName(scanner("模块名"));
+//            pc.setModuleName(scanner("模块名"));
+            pc.setModuleName(module_name);
         }
         pc.setParent(package_name);
         mpg.setPackageInfo(pc);
@@ -106,8 +108,12 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return projectPath + "/src/main/resources/mapper/" + pc.getModuleName()
-                        + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
+                if(StringUtils.isNotEmpty(pc.getModuleName())){
+                    return projectPath + "/src/main/resources/mapper/" + pc.getModuleName()
+                            + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
+                }else{
+                    return projectPath + "/src/main/resources/mapper/"+ tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
+                }
             }
         });
         /*
@@ -139,14 +145,12 @@ public class CodeGenerator {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-//        strategy.setSuperEntityClass("com.spring.common.base.entity.BaseEntity");
+//        strategy.setSuperEntityClass("com.baomidou.ant.common.BaseEntity");
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
 //        strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
-//        strategy.setSuperEntityColumns("id"); //使用父类字段
-//        strategy.setSuperEntityColumns("gmtCreate"); //使用父类字段
-//        strategy.setSuperEntityColumns("gmtModified"); //使用父类字段
+//        strategy.setSuperEntityColumns("id"); // 不用父类id
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
