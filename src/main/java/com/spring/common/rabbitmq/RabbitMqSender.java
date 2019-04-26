@@ -17,11 +17,11 @@ import java.util.UUID;
  */
 @Component
 public class RabbitMqSender implements RabbitTemplate.ConfirmCallback{
-	
+
 	private final static org.slf4j.Logger logger=LoggerFactory.getLogger(RabbitMqSender.class);
-   
+
 	private RabbitTemplate rabbitTemplate;
-    
+
 	@Autowired
 	public RabbitMqSender(RabbitTemplate rabbitTemplate){
 		this.rabbitTemplate=rabbitTemplate;
@@ -37,7 +37,7 @@ public class RabbitMqSender implements RabbitTemplate.ConfirmCallback{
 		logger.info("send id:{}",correlationData.getId());
 		this.rabbitTemplate.convertAndSend(RabbitMqConfig.FOO_EXCHANGE,RabbitMqConfig.FOO_ROUTINGKEY,msg,correlationData);
 	}
-    
+
 	/**
 	 * 回调函数
 	 */

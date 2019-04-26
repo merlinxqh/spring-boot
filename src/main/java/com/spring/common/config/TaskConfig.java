@@ -14,7 +14,7 @@ import com.spring.common.task.MyTask;
 
 @Configuration
 @EnableScheduling
-@ComponentScan(basePackages="com.spring.task")
+@ComponentScan(basePackages="com.spring.common.task")
 public class TaskConfig implements SchedulingConfigurer{
   
 	

@@ -5,7 +5,6 @@ import com.spring.common.redis.ObjectRedisTemplate;
 import com.spring.common.result.ResultWrapper;
 import com.spring.common.serialize.School;
 import com.spring.common.serialize.SerailizeTest;
-import com.spring.module.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.ui.ModelMap;
@@ -25,9 +24,6 @@ public class HelloController {
 	@Autowired
 	private ConfigProperties config;
 	
-	@Autowired
-	private ResourceService resourceService;
-	
 //	@Autowired
 //	private RabbitMqSender sender;
 
@@ -42,11 +38,6 @@ public class HelloController {
 		List<School> schoolList=redisTemplate.getListObj("redis:template:list:school",School.class);
 
 		return new ResultWrapper<>(1,"从redis读取对象",schoolList);
-	}
-	
-	@GetMapping(value="getList")
-	public @ResponseBody Object getList(){
-		return resourceService.findByBiz(null);
 	}
 	
 	@RequestMapping("/hello/{name}")

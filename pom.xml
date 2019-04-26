@@ -97,15 +97,15 @@
 			<version>4.0.38</version>
 		</dependency>
 <!-- 		spring-data-redis -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.springframework.data</groupId> -->
-<!-- 			<artifactId>spring-data-redis</artifactId> -->
-<!-- 			<version>${spring.data.redis.version}</version> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 		    <groupId>redis.clients</groupId> -->
-<!-- 		    <artifactId>jedis</artifactId> -->
-<!-- 		</dependency> -->
+ 		<dependency>
+ 			<groupId>org.springframework.data</groupId>
+ 			<artifactId>spring-data-redis</artifactId>
+ 			<version>${spring.data.redis.version}</version>
+ 		</dependency>
+ 		<dependency>
+ 		    <groupId>redis.clients</groupId>
+ 		    <artifactId>jedis</artifactId>
+ 		</dependency>
 <!-- 		protostuff序列化 -->
 		<dependency>
 		    <groupId>com.dyuproject.protostuff</groupId>
@@ -150,21 +150,6 @@
             <version>${org.mybatis.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>${mybatis.spring.version}</version>
-            <exclusions>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring-jdbc</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring-test</artifactId>
-					</exclusion>
-				</exclusions>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
@@ -200,6 +185,31 @@
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<!--mybatis-plus-->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<!--mybatis-plus代码生成器-->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-generator</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.28</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.18</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>
