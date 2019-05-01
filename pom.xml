@@ -96,6 +96,11 @@
 			<artifactId>hessian</artifactId>
 			<version>4.0.38</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>21.0</version>
+		</dependency>
 <!-- 		spring-data-redis -->
 <!-- 		<dependency> -->
 <!-- 			<groupId>org.springframework.data</groupId> -->
@@ -164,6 +169,7 @@
 					</exclusion>
 				</exclusions>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -201,7 +207,37 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>io.shardingjdbc</groupId>
+			<artifactId>sharding-jdbc-core</artifactId>
+			<version>2.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.18</version>
+		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.shardbatis</groupId>-->
+			<!--<artifactId>shardbatis</artifactId>-->
+			<!--<version>2.0.0B</version>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>net.sf.jsqlparser</groupId>-->
+			<!--<artifactId>jsqlparser</artifactId>-->
+			<!--<version>0.7.0</version>-->
+		<!--</dependency>-->
 	</dependencies>
+	<!--<repositories>-->
+		<!--<repository>-->
+			<!--<id>shardbaits</id>-->
+			<!--<name>shardbaits repository</name>-->
+			<!--<url>http://shardbatis.googlecode.com/svn/trunk/repository</url>-->
+			<!--<snapshots>-->
+				<!--<enabled>false</enabled>-->
+			<!--</snapshots>-->
+		<!--</repository>-->
+	<!--</repositories>-->
 	<build>
 	    <finalName>spring-boot</finalName>
 		<plugins>
