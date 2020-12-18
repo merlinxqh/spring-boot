@@ -1,16 +1,15 @@
 package com.spring.common.rabbitmq.config;
 
 
+import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;  
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;  
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.beans.factory.annotation.Value;  
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;  
-import org.springframework.context.annotation.Bean;  
-import org.springframework.context.annotation.Configuration;  
-import org.springframework.context.annotation.Scope;  
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
   
 @Configuration  
 public class RabbitMqConfig {  
@@ -56,6 +55,7 @@ public class RabbitMqConfig {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(new Jackson2JsonMessageConverter());
+        factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);// 手动确认消息 ack
         return factory;
     }
   
